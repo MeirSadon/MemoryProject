@@ -10,6 +10,7 @@ namespace MemoryProject
 	{
 		static void Main(string[] args)
 		{
+			Random randomGenerator = new Random();
 			Console.Write("how Much Players : ");
 			int howMuchPlayers = Convert.ToInt32(Console.ReadLine());
 			string[] nameOfPlayers = new string[howMuchPlayers];
@@ -31,6 +32,14 @@ namespace MemoryProject
 			}
 			int[] board = { size, size };
 			int pairs = size*size / 2;
+			int row;
+			int column;
+			for (int i = 1; i < pairs; i++)
+			{
+				while (board[])
+					row = randomGenerator.Next(0, size);
+					column = randomGenerator.Next(0, size);
+			}
 				
 		}
 		static bool IsAlreadyExist(string[] nameOfPlayers, string name)
