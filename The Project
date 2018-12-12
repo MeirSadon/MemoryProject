@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MemoryProject
+{
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			Console.Write("how Much Players : ");
+			int howMuchPlayers = Convert.ToInt32(Console.ReadLine());
+			string[] nameOfPlayers = new string[howMuchPlayers];
+			for (int i = 0; i < nameOfPlayers.Length; i++)
+			{
+				Console.Write($"The Name Of Player Number {i + 1}: ");
+				string name = Console.ReadLine();
+				if (IsAlreadyExist(nameOfPlayers, name))
+					nameOfPlayers[i] = name;
+				else
+					i--;
+			}
+			Console.Write("What Is The Size Of Your Board? : ");
+			int size = Convert.ToInt32(Console.ReadLine());
+			while (size > 8 || size % 2 != 0 || size < 1)
+			{
+			Console.Write("What Is The Size Of Your Board? : ");
+			size = Convert.ToInt32(Console.ReadLine());
+			}
+			int[] board = { size, size };
+			int pairs = size*size / 2;
+				
+		}
+		static bool IsAlreadyExist(string[] nameOfPlayers, string name)
+		{
+			for (int i = 0; i < nameOfPlayers.Length; i++)
+			{
+				if (name == nameOfPlayers[i])
+				{
+					Console.WriteLine("This Name Is Already Exist");
+					return false;
+				}
+			}
+			return true;
+		}
+		
+	}
+}
