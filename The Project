@@ -6,54 +6,114 @@ using System.Threading.Tasks;
 
 namespace MemoryProject
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			Random randomGenerator = new Random();
-			Console.Write("how Much Players : ");
-			int howMuchPlayers = Convert.ToInt32(Console.ReadLine());
-			string[] nameOfPlayers = new string[howMuchPlayers];
-			for (int i = 0; i < nameOfPlayers.Length; i++)
-			{
-				Console.Write($"The Name Of Player Number {i + 1}: ");
-				string name = Console.ReadLine();
-				if (IsAlreadyExist(nameOfPlayers, name))
-					nameOfPlayers[i] = name;
-				else
-					i--;
-			}
-			Console.Write("What Is The Size Of Your Board? : ");
-			int size = Convert.ToInt32(Console.ReadLine());
-			while (size > 8 || size % 2 != 0 || size < 1)
-			{
-			Console.Write("What Is The Size Of Your Board? : ");
-			size = Convert.ToInt32(Console.ReadLine());
-			}
-			int[] board = { size, size };
-			int pairs = size*size / 2;
-			int row;
-			int column;
-			for (int i = 1; i < pairs; i++)
-			{
-				while (board[])
-					row = randomGenerator.Next(0, size);
-					column = randomGenerator.Next(0, size);
-			}
-				
-		}
-		static bool IsAlreadyExist(string[] nameOfPlayers, string name)
-		{
-			for (int i = 0; i < nameOfPlayers.Length; i++)
-			{
-				if (name == nameOfPlayers[i])
-				{
-					Console.WriteLine("This Name Is Already Exist");
-					return false;
-				}
-			}
-			return true;
-		}
-		
-	}
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Random randomGenerator = new Random();
+            Console.Write("how Much Players : ");
+            int howMuchPlayers = Convert.ToInt32(Console.ReadLine());
+            string[] nameOfPlayers = new string[howMuchPlayers];
+            for (int i = 0; i < nameOfPlayers.Length; i++)
+            {
+                Console.Write($"The Name Of Player Number {i + 1}: ");
+                string name = Console.ReadLine();
+                if (CheckIfNamesUsed(nameOfPlayers, name))
+                    nameOfPlayers[i] = name;
+                else
+                    i--;
+            }
+
+
+            Console.Write("What Is The Size Of Your Board? : ");
+            int size = Convert.ToInt32(Console.ReadLine());
+            while (size > 8 || size % 2 != 0 || size < 1)
+            {
+                Console.Write("What Is The Size Of Your Board? : ");
+                size = Convert.ToInt32(Console.ReadLine());
+            }
+            int[,] board = new int[size, size];
+            int pairs = size * size / 2;
+            //full random the board with numbers 1-size.
+            for (int i = 1; i != pairs + 1; i++)
+            {
+                int row = randomGenerator.Next(0, size);
+                int column = randomGenerator.Next(0, size);
+                for (int a = 0; a < 2; a++)
+                {
+                    while (board[row, column] != 0)
+                    {
+                        row = randomGenerator.Next(0, size);
+                        column = randomGenerator.Next(0, size);
+                    }
+                    board[row, column] = i;
+                }
+            }
+            PrintTheBoard(board);
+
+            Console.Write($"{nameOfPlayers[0]} Please Choose Your First Card From The {size * size} Cards. \nRow: ");
+            int chooseRow1 = Convert.ToInt32(Console.ReadLine());
+            while (chooseRow1 > 8 || chooseRow1 < 1)
+            {
+                Console.Write("Please Choose Number Between 1-8");
+                Console.Write($"{nameOfPlayers[0]} Please Choose Your First Card From The {size * size} Cards. \nRow: ");
+                chooseRow1 = Convert.ToInt32(Console.ReadLine());
+            }
+            Console.Write("Columns : ");
+            int chooseColumn1 = Convert.ToInt32(Console.ReadLine());
+            while (chooseColumn1 > 8 || chooseColumn1 < 1)
+            {
+                Console.Write("Please Choose Number Between 1-8");
+                Console.Write("Columns : ");
+                chooseColumn1 = Convert.ToInt32(Console.ReadLine());
+            }
+            PrintTheBoard(board);
+            Console.Write($"Now, Choose Your Second Card \nRow: ");
+            int chooseRow2 = Convert.ToInt32(Console.ReadLine());
+            while (chooseRow2 > 8 || chooseRow2 < 1)
+            {
+                Console.Write("Please Choose Number Between 1-8");
+                Console.Write("Choose Your Second Card: ");
+                chooseRow1 = Convert.ToInt32(Console.ReadLine());
+            }
+            Console.Write("Columns : ");
+            int chooseColumn2 = Convert.ToInt32(Console.ReadLine());
+            while (chooseColumn2 > 8 || chooseColumn2 < 1)
+            {
+                Console.Write("Please Choose Number Between 1-8");
+                Console.Write("Columns : ");
+                chooseColumn1 = Convert.ToInt32(Console.ReadLine());
+            }
+            PrintTheBoard(board);
+
+
+            Convert.ToInt32(Console.ReadLine());
+
+        }
+        static void PrintTheBoard(int[,] board)
+        {
+            Console.WriteLine();
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int J = 0; J < board.GetLength(1); J++)
+                {
+                    Console.Write($"{board[i,J]}, ");
+                }
+                Console.WriteLine();
+            }
+        }
+        static bool CheckIfNamesUsed(string[] nameOfPlayers, string name)
+        {
+            for (int i = 0; i < nameOfPlayers.Length; i++)
+            {
+                if (name == nameOfPlayers[i])
+                {
+                    Console.WriteLine("This Name Is Already Exist");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+    }
 }
