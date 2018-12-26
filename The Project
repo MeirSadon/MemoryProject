@@ -51,53 +51,86 @@ namespace MemoryProject
 			}
 			PrintTheBoard(board);
 
-			//***************************************************Choose First Card.
 
-			Console.Write($"{nameOfPlayers[0]} Please Choose Row For Your First Card (1-{size}): ");
-			int chooseRow1 = Convert.ToInt32(Console.ReadLine());
-			while (chooseRow1 > size || chooseRow1 < 1)
-			{
-				Console.Write($"Please Choose Number Between 1-{size}: ");
-				chooseRow1 = Convert.ToInt32(Console.ReadLine());
-			}
-			Console.Write($"Now, Choose Column For Your First Card (1-{size}): ");
-			int chooseColumn1 = Convert.ToInt32(Console.ReadLine());
-			while (chooseColumn1 > size || chooseColumn1 < 1)
-			{
-				Console.Write($"Please Choose Number Between 1-{size}: ");
-				chooseColumn1 = Convert.ToInt32(Console.ReadLine());
-			}
-			int firstCard = board[chooseRow1 - 1, chooseColumn1 - 1];
-			Console.WriteLine($"Your First Card is: {firstCard}");
 
-			//***************************************************Choose Second Card.
-
-			Console.Write($"Now, Let Choose Your Second Card");
-			Console.Write($"Choose Row For Your Second Card (1-{size}): ");
-			int chooseRow2 = Convert.ToInt32(Console.ReadLine());
-			while (chooseRow2 > size || chooseRow2 < 1)
+			for (int i = 0; i < pairs; i++)
 			{
-				Console.Write($"Please Choose Number Between 1-{size}: ");
-				chooseRow2 = Convert.ToInt32(Console.ReadLine());
-			}
-			Console.Write($"Now, Choose Column For Your Second Card (1-{size}): ");
-			int chooseColumn2 = Convert.ToInt32(Console.ReadLine());
-			while (chooseColumn2 > size || chooseColumn2 < 1)
-			{
-				Console.Write($"Please Choose Number Between 1-{size}: ");
-				chooseColumn2 = Convert.ToInt32(Console.ReadLine());
-			}
-			int secondCard = board[chooseRow2 - 1, chooseColumn2 - 1];
-			Console.WriteLine($"Your Second Card is: {secondCard}");
+				int chooseRow1 = 0;
+				int chooseColumn1 = 0;
+				int chooseRow2 = 0;
+				int chooseColumn2 = 0;
+				int firstCard = 0;
+				int secondCard = 0;
+				//***************************************************Choose First Card.
+				while (firstCard == 0)
+				{
+					Console.Write($"{nameOfPlayers[0]} Please Choose Row For Your First Card (1-{size}): ");
+					chooseRow1 = Convert.ToInt32(Console.ReadLine());
+					while (chooseRow1 > size || chooseRow1 < 1)
+					{
+						Console.Write($"Please Choose Number Between 1-{size}: ");
+						chooseRow1 = Convert.ToInt32(Console.ReadLine());
+					}
+					Console.Write($"Now, Choose Column For Your First Card (1-{size}): ");
+					chooseColumn1 = Convert.ToInt32(Console.ReadLine());
+					while (chooseColumn1 > size || chooseColumn1 < 1)
+					{
+						Console.Write($"Please Choose Number Between 1-{size}: ");
+						chooseColumn1 = Convert.ToInt32(Console.ReadLine());
+					}
+					if (board[chooseRow1, chooseColumn1] != 0)
+					{
+						firstCard = board[chooseRow1 - 1, chooseColumn1 - 1];
+						Console.WriteLine($"Your First Card is: {firstCard}");
+					}
+					if (firstCard == 0)
+					{
+						Console.WriteLine($"Sorry You Can't Choose Used Card");
+					}
+				}
 
-			//**************************************Check Same.
-			if (firstCard == secondCard)
-			{
-				board[chooseRow1 -1, chooseColumn1 -1] = 0;
-				board[chooseRow2 -1, chooseColumn2 -1] = 0;
-			}
-			PrintTheBoard(board);
+				//***************************************************Choose Second Card.
 
+				while (secondCard == 0)
+				{
+					Console.Write($"Choose Row For Your Second Card (1-{size}): ");
+					chooseRow2 = Convert.ToInt32(Console.ReadLine());
+					while (chooseRow2 > size || chooseRow2 < 1)
+					{
+						Console.Write($"Please Choose Number Between 1-{size}: ");
+						chooseRow2 = Convert.ToInt32(Console.ReadLine());
+					}
+					Console.Write($"Now, Choose Column For Your Second Card (1-{size}): ");
+					chooseColumn2 = Convert.ToInt32(Console.ReadLine());
+					while (chooseColumn2 > size || chooseColumn2 < 1)
+					{
+						Console.Write($"Please Choose Number Between 1-{size}: ");
+						chooseColumn2 = Convert.ToInt32(Console.ReadLine());
+					}
+					if (board[chooseRow2, chooseColumn2] != 0 && board[chooseRow2,chooseColumn2] != board[chooseRow1, chooseColumn1])
+					{
+						secondCard = board[chooseRow2 - 1, chooseColumn2 - 1];
+						Console.WriteLine($"Your Second Card is: {secondCard}");
+					}
+					if (secondCard == 0 || board[chooseRow2, chooseColumn2] == board[chooseRow1, chooseColumn1])
+					{
+						Console.WriteLine($"Sorry You Can't Choose Used Card");
+					}
+				}
+				//**************************************Check Same.
+				if (firstCard == secondCard)
+				{
+					board[chooseRow1 - 1, chooseColumn1 - 1] = 0;
+					board[chooseRow2 - 1, chooseColumn2 - 1] = 0;
+					Console.WriteLine("Good !! You Got a Point");
+				}
+				if (firstCard != secondCard)
+				{
+					Console.WriteLine("Sorry, You Did Not Succeed This Time... Try Again Next Time!");
+					i--;
+				}
+				PrintTheBoard(board);
+			}
 			Convert.ToInt32(Console.ReadLine());
 
 		}
@@ -112,6 +145,7 @@ namespace MemoryProject
 				}
 				Console.WriteLine();
 			}
+			Console.WriteLine();
 		}
 		static bool CheckIfNamesUsed(string[] nameOfPlayers, string name)
 		{
