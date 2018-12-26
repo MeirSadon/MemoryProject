@@ -87,9 +87,16 @@ namespace MemoryProject
 				Console.Write($"Please Choose Number Between 1-{size}: ");
 				chooseColumn2 = Convert.ToInt32(Console.ReadLine());
 			}
-			int secondCard = board[chooseRow1 - 1, chooseColumn1 - 1];
+			int secondCard = board[chooseRow2 - 1, chooseColumn2 - 1];
 			Console.WriteLine($"Your Second Card is: {secondCard}");
 
+			//**************************************Check Same.
+			if (firstCard == secondCard)
+			{
+				board[chooseRow1 -1, chooseColumn1 -1] = 0;
+				board[chooseRow2 -1, chooseColumn2 -1] = 0;
+			}
+			PrintTheBoard(board);
 
 			Convert.ToInt32(Console.ReadLine());
 
