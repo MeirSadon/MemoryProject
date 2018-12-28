@@ -11,9 +11,10 @@ namespace MemoryProject
         static void Main(string[] args)
         {
             Random randomGenerator = new Random();
-            Console.Write("how Much Players : ");
+            Console.Write("How Much Players : ");
             int howMuchPlayers = Convert.ToInt32(Console.ReadLine());
             string[] nameOfPlayers = new string[howMuchPlayers];
+            int[] score = new int[howMuchPlayers];
             for (int i = 0; i < nameOfPlayers.Length; i++)
             {
                 Console.Write($"The Name Of Player Number {i + 1}: ");
@@ -51,8 +52,7 @@ namespace MemoryProject
             }
             PrintTheBoard(board);
 
-
-            int tries = 0;
+            int currentPlayer = 0;
             for (int i = 0; i < pairs; i++)
             {
                 int chooseRow1 = 0;
@@ -61,10 +61,11 @@ namespace MemoryProject
                 int chooseColumn2 = 0;
                 int firstCard = 0;
                 int secondCard = 0;
+
                 //***************************************************Choose First Card.
                 while (firstCard == 0)
                 {
-                    Console.Write($"{nameOfPlayers[0]} Please Choose Row For Your First Card (1-{size}): ");
+                    Console.Write($"{nameOfPlayers[currentPlayer]} Please Choose Row For Your First Card (1-{size}): ");
                     chooseRow1 = Convert.ToInt32(Console.ReadLine());
                     while (chooseRow1 > size || chooseRow1 < 1)
                     {
@@ -124,17 +125,21 @@ namespace MemoryProject
                 {
                     board[chooseRow1 - 1, chooseColumn1 - 1] = 0;
                     board[chooseRow2 - 1, chooseColumn2 - 1] = 0;
-                    Console.WriteLine("Good !! You Got a Point");
+                    Console.WriteLine($"Good {nameOfPlayers[currentPlayer]} !! You Found a New Pair And Got a Point!");
+                    score[currentPlayer] += 1;
                 }
                 if (firstCard != secondCard)
                 {
                     Console.WriteLine("Sorry, You Did Not Succeed This Time... Try Again Next Time!");
+                    currentPlayer++;
+                    if (currentPlayer > howMuchPlayers)
+                        currentPlayer = 0;
                     i--;
                 }
-                tries++;
+                
                 PrintTheBoard(board);
             }
-            Console.WriteLine($"Congratulations !!! You've Found All {pairs} Pairs In {tries} Times");
+            Console.WriteLine($"Congratulations !!! You've Found All {pairs} Pairs In Times");
 
             Console.ReadLine();
 
