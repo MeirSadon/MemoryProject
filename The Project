@@ -10,20 +10,32 @@ namespace MemoryProject
     {
         static void Main(string[] args)
         {
+            int tries = 0;
+            int currentPlayer = 0;
+            int chooseRow1 = 0;
+            int chooseColumn1 = 0;
+            int chooseRow2 = 0;
+            int chooseColumn2 = 0;
+            int firstCard = 0;
+            int secondCard = 0;
+
             Random randomGenerator = new Random();
             Console.Write("How Much Players : ");
             int howMuchPlayers = Convert.ToInt32(Console.ReadLine());
             string[] nameOfPlayers = new string[howMuchPlayers];
             int[] score = new int[howMuchPlayers];
-            for (int i = 0; i < nameOfPlayers.Length; i++)
-            {
-                Console.Write($"The Name Of Player Number {i + 1}: ");
-                string name = Console.ReadLine();
-                if (CheckIfNamesUsed(nameOfPlayers, name))
-                    nameOfPlayers[i] = name;
-                else
-                    i--;
-            }
+            if (howMuchPlayers == 1)
+                Console.WriteLine($"Please Write Your Name: ");
+            else
+                for (int i = 0; i < nameOfPlayers.Length; i++)
+                {
+                    Console.Write($"The Name Of Player Number {i + 1}: ");
+                    string name = Console.ReadLine();
+                    if (CheckIfNamesUsed(nameOfPlayers, name))
+                        nameOfPlayers[i] = name;
+                    else
+                        i--;
+                }
 
 
             Console.Write("What Is The Size Of Your Board?: ");
@@ -52,15 +64,8 @@ namespace MemoryProject
             }
             PrintTheBoard(board);
 
-            int currentPlayer = 0;
             for (int i = 0; i < pairs; i++)
             {
-                int chooseRow1 = 0;
-                int chooseColumn1 = 0;
-                int chooseRow2 = 0;
-                int chooseColumn2 = 0;
-                int firstCard = 0;
-                int secondCard = 0;
 
                 //***************************************************Choose First Card.
                 while (firstCard == 0)
@@ -79,7 +84,7 @@ namespace MemoryProject
                         Console.Write($"Please Choose Number Between 1-{size}: ");
                         chooseColumn1 = Convert.ToInt32(Console.ReadLine());
                     }
-                    if (board[chooseRow1 -1, chooseColumn1 -1] != 0)
+                    if (board[chooseRow1 - 1, chooseColumn1 - 1] != 0)
                     {
                         firstCard = board[chooseRow1 - 1, chooseColumn1 - 1];
                         Console.WriteLine($"Your First Card is: {firstCard}");
@@ -89,6 +94,24 @@ namespace MemoryProject
                         Console.WriteLine($"Sorry You Can't Choose Used Card");
                     }
                 }
+                for (int j = 0; j < board.GetLength(0); j++)
+                {
+                    for (int t = 0; t < board.GetLength(1); t++)
+                    {
+                        if (board[j, t] == 0)
+                            Console.Write($"0, ");
+                        else
+                        {
+                            if (board[j, t] == firstCard || board[j, t] == secondCard)
+                                Console.Write($"{board[j, t]}, ");
+                            else
+                                Console.Write($"X, ");
+                        }
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+
 
                 //***************************************************Choose Second Card.
 
@@ -109,12 +132,12 @@ namespace MemoryProject
                         chooseColumn2 = Convert.ToInt32(Console.ReadLine());
                     }
                     bool usedCard = chooseRow1 == chooseRow2 && chooseColumn1 == chooseColumn2 ? true : false;
-                    if (board[chooseRow2 -1, chooseColumn2 -1] != 0 && !usedCard)
+                    if (board[chooseRow2 - 1, chooseColumn2 - 1] != 0 && !usedCard)
                     {
                         secondCard = board[chooseRow2 - 1, chooseColumn2 - 1];
                         Console.WriteLine($"Your Second Card is: {secondCard}");
                     }
-                    
+
                     if (secondCard == 0 || usedCard)
                     {
                         Console.WriteLine($"Sorry You Can't Choose Used Card");
@@ -125,21 +148,55 @@ namespace MemoryProject
                 {
                     board[chooseRow1 - 1, chooseColumn1 - 1] = 0;
                     board[chooseRow2 - 1, chooseColumn2 - 1] = 0;
-                    Console.WriteLine($"Good {nameOfPlayers[currentPlayer]} !! You Found a New Pair And Got a Point!");
                     score[currentPlayer] += 1;
+                    Console.WriteLine();
+                    Console.WriteLine($"Good {nameOfPlayers[currentPlayer]} !! You Found a New Pair.");
+                    if (howMuchPlayers > 1)
+                        Console.WriteLine($"score: {score[currentPlayer]}");
                 }
                 if (firstCard != secondCard)
                 {
                     Console.WriteLine("Sorry, You Did Not Succeed This Time... Try Again Next Time!");
                     currentPlayer++;
-                    if (currentPlayer > howMuchPlayers)
+                    if (currentPlayer > howMuchPlayers - 1)
                         currentPlayer = 0;
                     i--;
                 }
-                
-                PrintTheBoard(board);
+                tries++;
+
+                Console.WriteLine();
+                for (int j = 0; j < board.GetLength(0); j++)
+                {
+                    for (int t = 0; t < board.GetLength(1); t++)
+                    {
+                        if (board[j, t] == 0)
+                            Console.Write($"0, ");
+                        else
+                        {
+                            if (board[j, t] == firstCard || board[j, t] == secondCard)
+                                Console.Write($"{board[j, t]}, ");
+                            else
+                                Console.Write($"X, ");
+                        }
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
             }
-            Console.WriteLine($"Congratulations !!! You've Found All {pairs} Pairs In Times");
+            int max = 0;
+            currentPlayer = 0;
+            for (int i = 0; i < score.Length; i++)
+            {
+                if (max < score[i])
+                {
+                    max = score[i];
+                    currentPlayer = i;
+                }
+            }
+            if (howMuchPlayers == 1)
+                Console.WriteLine($"Congratulations !!! You've Found All {pairs} Pairs In {tries} Times!");
+            else
+                Console.WriteLine($"The Game Is Over! And The Winner Player Is {nameOfPlayers[currentPlayer]} With {max} Pairs!");
 
             Console.ReadLine();
 
